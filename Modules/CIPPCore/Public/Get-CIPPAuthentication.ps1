@@ -4,7 +4,7 @@ function Get-CIPPAuthentication {
     param (
         $APIName = 'Get Keyvault Authentication'
     )
-    $Variables = @('ApplicationId', 'ApplicationSecret', 'TenantId', 'RefreshToken')
+    $Variables = @('ApplicationID', 'ApplicationSecret', 'TenantID', 'RefreshToken')
 
     try {
         if ($env:AzureWebJobsStorage -eq 'UseDevelopmentStorage=true') {
@@ -30,9 +30,7 @@ function Get-CIPPAuthentication {
 
         return $true
     } catch {
-        Write-LogMessage -message "Could not retrieve keys from Keyvault: $($_.Exception.Message)" -Sev 'CRITICAL' -API 'CIPP Authentication'
+        Write-LogMessage -message 'Could not retrieve keys from Keyvault' -Sev 'CRITICAL' -API 'CIPP Authentication' -LogData (Get-CippException -Exception $_)
         return $false
     }
 }
-
-

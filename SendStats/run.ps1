@@ -4,7 +4,7 @@ param($Timer)
 #These stats are sent to a central server to help us understand how many tenants are using the product, and how many are using the latest version, this information allows the CIPP team to make decisions about what features to support, and what features to deprecate.
 #We will never ship any data that is related to your instance, all we care about is the number of tenants, and the version of the API you are running, and if you completed setup.
 
-if ($ENV:applicationid -ne 'LongApplicationID') {
+if ($ENV:ApplicationID -ne 'LongApplicationID') {
     $SetupComplete = $true
 }
 $TenantCount = (Get-Tenants).count
@@ -17,6 +17,7 @@ $SendingObject = [PSCustomObject]@{
     SetupComplete       = $SetupComplete
     RunningVersionAPI   = $APIVersion.trim()
     CountOfTotalTenants = $tenantcount
+    uid                 = $env:TenantID
 } | ConvertTo-Json
 
 Invoke-RestMethod -Uri 'https://management.cipp.app/api/stats' -Method POST -Body $SendingObject -ContentType 'application/json'
